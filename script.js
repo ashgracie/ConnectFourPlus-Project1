@@ -71,5 +71,7 @@ class Token{
 let board = new Board(7, 7);
 
 
+let token = new Token(2,4)
+board.placeToken(token);
 
-
+board.placeToken(new Token(2,4,1));
