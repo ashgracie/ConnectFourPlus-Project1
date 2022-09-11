@@ -1,4 +1,8 @@
 .grid-container {
     display: grid;
-    gap: 50px 100px;
+    grid-template-columns: repeat(9,auto);
+    gap: 50px 50px;
   }
+.token{
+  background-color: aqua;
+}
