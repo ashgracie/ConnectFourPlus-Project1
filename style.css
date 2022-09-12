@@ -1,8 +1,24 @@
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(9,auto);
-    gap: 50px 50px;
-  }
+  display: inline-grid;
+  grid-template-columns: repeat(9,auto);
+  gap: 0;
+  border: 1px solid black;
+
+}
+.grid-item{
+  width: 8vh;
+  height: 8vh;
+  padding: 1vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid black;
+}
+.grid-item button {
+  font-size: x-large;
+}
 .token{
   background-color: aqua;
 }
