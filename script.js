@@ -103,12 +103,25 @@ class Board{
         }
         console.log(counters)
         if(counters[0]+counters[1]>=3 || counters[2]+counters[3]>=3 || counters[4]+counters[5]>=3 || counters[6]+counters[7]>=3) {
-            alert("you win")
-
+            this.gameOver()
         }
 
     }
-
+    newGame(){
+        this.currentPlayer = 1
+        document.querySelectorAll(".grid-item button").forEach((button)=>{
+            button.disabled=false;
+            button.innerHTML = "❌"
+        })
+        this.data={}
+    }
+    gameOver(){
+        document.querySelectorAll(".grid-item button").forEach((button)=>{
+            button.disabled=true;
+        })
+        alert("Player "+this.currentPlayer+" won!")
+        this.newGame()
+    }
     generateHTML(){
         let boardHTML=document.querySelector("#board")
         for(let y = 4; y >= -4; y-- ){
@@ -118,14 +131,16 @@ class Board{
                 // div.innerHTML+=loc(x,y)
                 div.classList.add("grid-item");
                 if((y==4 || y==-4) && !(x==4 || x==-4) || (x==4 || x==-4) && !(y==4 || y==-4)) {
+                    div.classList.add("token-button");
                     let button = document.createElement("button");
                     button.innerHTML="⭕️";
                     button.innerHTML="❌";
-
                     button.addEventListener('click', function() {
                         board.placeToken(new Token(x,y))
                     });
                     div.append(button)
+                } else if(!((y==4 && x==4) || (y==-4 && x==4) || (y==4 && x==-4) || (y==-4 && x==-4) )) {
+                    div.classList.add("space");
                 }
 
                 
