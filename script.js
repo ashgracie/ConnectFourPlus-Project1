@@ -61,7 +61,7 @@ class Board{
 
             
             
-            document.getElementById(token.location()).classList.add("token")
+            document.getElementById(token.location()).classList.add("token"+this.currentPlayer)
             document.getElementById(token.location()).innerHTML = this.currentPlayer==1 ? "❌":"⭕️"
 
             if(this.currentPlayer == 1){
@@ -109,10 +109,17 @@ class Board{
     }
     newGame(){
         this.currentPlayer = 1
-        document.querySelectorAll(".grid-item button").forEach((button)=>{
+        document.querySelectorAll(".token-button").forEach((button)=>{
             button.disabled=false;
             button.innerHTML = "❌"
         })
+        document.querySelectorAll(".space").forEach((space)=>{
+            space.innerHTML = ""
+            space.classList.remove("token1")
+            space.classList.remove("token2")
+        })
+
+
         this.data={}
     }
     gameOver(){
@@ -131,8 +138,9 @@ class Board{
                 // div.innerHTML+=loc(x,y)
                 div.classList.add("grid-item");
                 if((y==4 || y==-4) && !(x==4 || x==-4) || (x==4 || x==-4) && !(y==4 || y==-4)) {
-                    div.classList.add("token-button");
                     let button = document.createElement("button");
+                    div.classList.add("token-button-holder");
+                    button.classList.add("token-button");
                     button.innerHTML="⭕️";
                     button.innerHTML="❌";
                     button.addEventListener('click', function() {
@@ -188,3 +196,11 @@ let token = new Token(2,4)
 
 //board.placeToken(new Token(2,4,1));
 
+document.querySelector("#restart").addEventListener("click", ()=>{board.newGame()})
+let modalDIV = document.querySelector("#modal")
+document.querySelector("#modal-button").addEventListener("click",()=>{
+    modalDIV.style.display="flex"
+})
+modalDIV.addEventListener("click", ()=>{
+    modalDIV.style.display="none"
+})
