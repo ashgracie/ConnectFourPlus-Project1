@@ -7,15 +7,14 @@ Determine who won or if it's a draw
 Reset the game
 */
 
+//global variable
 let board
 
 class Board{
+    //variable to store all of the tokens
     data = {}
     currentPlayer = 1;
-    constructor(rows, cols){
-        this.rows = rows;
-        this.cols = cols;
-        // this.data["0,0"]="Occupied";
+    constructor(){
         this.generateHTML()
     }
     placeToken(token){
@@ -54,16 +53,16 @@ class Board{
             }
             
         }
+        // make sure the token actually moved
         if((token.x != 4 && token.x!=-4) && (token.y != 4 && token.y!=-4)){
             token.player = this.currentPlayer
             this.data[token.location()] = token
             this.check(token)
 
-            
-            
             document.getElementById(token.location()).classList.add("token"+this.currentPlayer)
             document.getElementById(token.location()).innerHTML = this.currentPlayer==1 ? "❌":"⭕️"
 
+            // changes which players turn it is
             if(this.currentPlayer == 1){
                 this.currentPlayer = 2
             } else if(this.currentPlayer == 2) {
@@ -73,14 +72,17 @@ class Board{
                 button.innerHTML= this.currentPlayer==1 ? "❌":"⭕️"
             })
         } else {
-            //error message
+            // error message
+            alert("You have no more spaces to move in that direction.")
         }
         console.log("Final location ",token, this.data)
     }
     check(token){
+        // 2 arrays one to count and one to tell wehn to stop counting
         let breakers = [false,false,false,false,false,false,false,false];
         let counters = [0,0,0,0,0,0,0,0];
         for(let s=1; s<=4; s++){
+            // an array of locations to check moving away from the token by 's'
             let locations = [];
             locations.push(loc(token.x + s,token.y))
             locations.push(loc(token.x - s,token.y))
@@ -91,8 +93,11 @@ class Board{
             locations.push(loc(token.x - s,token.y + s))
             locations.push(loc(token.x + s,token.y - s))
             locations.forEach((loc,idx)=>{
+                // check if its still contected using breakers
                 if(breakers[idx]){return}
+                // check if the next location has a token for this player
                 if(this.data[loc]==undefined || this.data[loc].player!=token.player){
+                    // no token or it doesn't belong to current player so break this chain
                     breakers[idx] = true;
                 } else {
                     counters[idx]++;
@@ -101,13 +106,14 @@ class Board{
             console.log(locations)
             console.log(counters)
         }
-        console.log(counters)
+        console.log("Final ",counters)
         if(counters[0]+counters[1]>=3 || counters[2]+counters[3]>=3 || counters[4]+counters[5]>=3 || counters[6]+counters[7]>=3) {
             this.gameOver()
         }
 
     }
     newGame(){
+        //resets everything
         this.currentPlayer = 1
         document.querySelectorAll(".token-button").forEach((button)=>{
             button.disabled=false;
@@ -118,11 +124,10 @@ class Board{
             space.classList.remove("token1")
             space.classList.remove("token2")
         })
-
-
         this.data={}
     }
     gameOver(){
+        //ends the game
         document.querySelectorAll(".grid-item button").forEach((button)=>{
             button.disabled=true;
         })
@@ -130,14 +135,17 @@ class Board{
         this.newGame()
     }
     generateHTML(){
+        //hooking up the html to the javascript
         let boardHTML=document.querySelector("#board")
         for(let y = 4; y >= -4; y-- ){
             for(let x = -4; x <= 4; x++){
+                //creates the board spaces
                 let div = document.createElement("div");
                 div.id = loc(x,y)
                 // div.innerHTML+=loc(x,y)
                 div.classList.add("grid-item");
                 if((y==4 || y==-4) && !(x==4 || x==-4) || (x==4 || x==-4) && !(y==4 || y==-4)) {
+                    //creates the buttons to play
                     let button = document.createElement("button");
                     div.classList.add("token-button-holder");
                     button.classList.add("token-button");
@@ -183,19 +191,15 @@ class Token{
        return loc(this.x,this.y)
     }
 }
+//global convenience function
 function loc(x,y) {
     return x+","+y;
 }
 
+//creates the board
+board = new Board();
 
-board = new Board(7, 7);
-
-
-let token = new Token(2,4)
-//board.placeToken(token);
-
-//board.placeToken(new Token(2,4,1));
-
+//hooking up event listeners for modal buttons and restart
 document.querySelector("#restart").addEventListener("click", ()=>{board.newGame()})
 let modalDIV = document.querySelector("#modal")
 document.querySelector("#modal-button").addEventListener("click",()=>{
