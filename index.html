@@ -12,6 +12,7 @@
   <button id="restart">Restart</button>
   <div id="board" class="grid-container"></div>
   <button id="modal-button">How<br/>To<br/>Play</button>
+  <button id="modal-color">Pick<br/>Your<br/>Color<br/></button>
 </div>
 <div id="modal">
   <div>
@@ -26,6 +27,36 @@
 
 </div>
 
+<div id="modal2">
+  <div >
+    <div>
+      Player 1 
+      <label>Symbol:<input onclick="event.stopPropagation()" onchange="changeSymbol(event,this)" id="player1Symbol" value="❌"></input></label>
+      <select id="player1Color" onclick="event.stopPropagation()" onchange="changeColor(event,this)">
+        <option>Red</option>
+        <option selected>Blue</option>
+        <option>Green</option>
+        <option>Orange</option>
+      </select>
+    </div>
+    <hr/>
+    <div>
+      Player 2 
+      <label>Symbol:<input onclick="event.stopPropagation()" onchange="changeSymbol(event,this)" id="player2Symbol" value="⭕️"></input></label>
+        <select id="player2Color" onclick="event.stopPropagation()" onchange="changeColor(event,this)">
+          <option>Red</option>
+          <option value="aqua">Blue</option>
+          <option>Green</option>
+          <option selected>Orange</option>
+        </select>
+    </div>
+
+
+  
+
+  </div>
+</div>
+  
   </body>
   </html>
 

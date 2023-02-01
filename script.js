@@ -10,6 +10,9 @@ Reset the game
 //global variable
 let board
 
+var player1Symbol="❌"
+var player2Symbol="⭕️"
+
 class Board{
     //variable to store all of the tokens
     data = {}
@@ -60,7 +63,7 @@ class Board{
             this.check(token)
 
             document.getElementById(token.location()).classList.add("token"+this.currentPlayer)
-            document.getElementById(token.location()).innerHTML = this.currentPlayer==1 ? "❌":"⭕️"
+            document.getElementById(token.location()).innerHTML = this.currentPlayer==1 ? player1Symbol:player2Symbol
 
             // changes which players turn it is
             if(this.currentPlayer == 1){
@@ -69,7 +72,7 @@ class Board{
                 this.currentPlayer = 1
             }
             document.querySelectorAll(".grid-item button").forEach((button)=>{
-                button.innerHTML= this.currentPlayer==1 ? "❌":"⭕️"
+                button.innerHTML= this.currentPlayer==1 ? player1Symbol:player2Symbol
             })
         } else {
             // error message
@@ -117,7 +120,7 @@ class Board{
         this.currentPlayer = 1
         document.querySelectorAll(".token-button").forEach((button)=>{
             button.disabled=false;
-            button.innerHTML = "❌"
+            button.innerHTML = player1Symbol
         })
         document.querySelectorAll(".space").forEach((space)=>{
             space.innerHTML = ""
@@ -149,8 +152,7 @@ class Board{
                     let button = document.createElement("button");
                     div.classList.add("token-button-holder");
                     button.classList.add("token-button");
-                    button.innerHTML="⭕️";
-                    button.innerHTML="❌";
+                    button.innerHTML=player1Symbol;
                     button.addEventListener('click', function() {
                         board.placeToken(new Token(x,y))
                     });
@@ -202,9 +204,41 @@ board = new Board();
 //hooking up event listeners for modal buttons and restart
 document.querySelector("#restart").addEventListener("click", ()=>{board.newGame()})
 let modalDIV = document.querySelector("#modal")
+let modalDIV2 = document.querySelector("#modal2")
 document.querySelector("#modal-button").addEventListener("click",()=>{
     modalDIV.style.display="flex"
+})
+document.querySelector("#modal-color").addEventListener("click",()=>{
+    modalDIV2.style.display="flex"
 })
 modalDIV.addEventListener("click", ()=>{
     modalDIV.style.display="none"
 })
+modalDIV2.addEventListener("click", ()=>{
+    modalDIV2.style.display="none"
+})
+function test(e){
+    console.log("test");
+    e.stopPropagation()
+}
+function changeColor(e,el){
+    var r = document.querySelector(':root');
+    if (el.id=="player1Color"){
+        r.style.setProperty('--player1Color', el.value);
+    } else {
+        r.style.setProperty('--player2Color', el.value);
+    }
+    console.log(el);
+    e.stopPropagation()
+
+}
+function changeSymbol(e,el){
+    if (el.id=="player1Symbol"){
+        player1Symbol = el.value.substring(0,2)
+    } else {
+        player2Symbol = el.value.substring(0,2)
+    }
+    console.log(player1Symbol,player2Symbol);
+    e.stopPropagation()
+
+}
